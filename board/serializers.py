@@ -24,6 +24,7 @@ class CommentSerializer(serializers.ModelSerializer):
 class ArticleSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='writer.username', read_only=True)
     comments = CommentSerializer(many=True, read_only=True)
+    comment_cnt = serializers.IntegerField(read_only=True)
 
     def to_representation(self, instance):
         ret = super(ArticleSerializer, self).to_representation(instance)
@@ -36,4 +37,4 @@ class ArticleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Article
-        fields = ['title', 'username', 'text', 'vote', 'is_anonym', 'created_at', 'comments']  
+        fields = ['title', 'username', 'text', 'is_anonym', 'created_at', 'comment_cnt', 'comments']  

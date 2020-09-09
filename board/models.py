@@ -14,7 +14,6 @@ class Article(models.Model):
     board = models.ForeignKey(Board, on_delete=models.DO_NOTHING)
     title = models.CharField(max_length=200)
     text = models.TextField()
-    vote = models.IntegerField(default=0)
     is_anonym = models.BooleanField()
     created_at = models.DateTimeField(auto_now_add=True)
 

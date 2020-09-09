@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.db.models import Count 
 from rest_framework import viewsets, mixins
 from .serializers import BoardSerializer, ArticleSerializer, CommentSerializer
 from .models import Board, Article, Comment
@@ -10,7 +10,7 @@ class BoardViewSet(viewsets.ModelViewSet):
 
 class ArticleViewSet(viewsets.ModelViewSet):
     serializer_class = ArticleSerializer
-    queryset = Article.objects.all()
+    queryset = Article.objects.annotate(comment_cnt=Count('comments'))
 
 class CommentViewSet(mixins.CreateModelMixin,
                     mixins.UpdateModelMixin,
