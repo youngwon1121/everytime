@@ -7,13 +7,33 @@ class BoardSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class CommentSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='writer.username', read_only=True)
+
+    def to_representation(self, instance):
+        ret = super(CommentSerializer, self).to_representation(instance)
+
+        if instance.is_anonym:
+            ret['username'] = '익명'
+        
+        return ret
+
     class Meta:
         model = Comment
         fields = '__all__'
 
 class ArticleSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='writer.username', read_only=True)
     comments = CommentSerializer(many=True, read_only=True)
+
+    def to_representation(self, instance):
+        ret = super(ArticleSerializer, self).to_representation(instance)
+        
+        if instance.is_anonym:
+            ret['username'] = '익명'
+
+        return ret
+
 
     class Meta:
         model = Article
-        fields = ['title', 'text', 'vote', 'is_anonym', 'created_at', 'comments']  
+        fields = ['title', 'username', 'text', 'vote', 'is_anonym', 'created_at', 'comments']  

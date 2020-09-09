@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
 
 class Board(models.Model):
@@ -10,6 +10,7 @@ class Board(models.Model):
         return self.name
 
 class Article(models.Model):
+    writer = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     board = models.ForeignKey(Board, on_delete=models.DO_NOTHING)
     title = models.CharField(max_length=200)
     text = models.TextField()
@@ -27,7 +28,9 @@ class ArticleImage(models.Model):
 
 
 class Comment(models.Model):
+    writer = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     article = models.ForeignKey(Article, related_name='comments',on_delete=models.DO_NOTHING)
     parent = models.ForeignKey('self', on_delete=models.DO_NOTHING, blank=True, null=True)
     text = models.CharField(max_length=200)
+    is_anonym = models.BooleanField()
     created_at = models.DateTimeField(auto_now_add=True)
