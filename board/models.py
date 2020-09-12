@@ -10,12 +10,13 @@ class Board(models.Model):
         return self.name
 
 class Article(models.Model):
-    writer = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    writer = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='articles')
     board = models.ForeignKey(Board, on_delete=models.DO_NOTHING)
     title = models.CharField(max_length=200)
     text = models.TextField()
     is_anonym = models.BooleanField()
     created_at = models.DateTimeField(auto_now_add=True)
+    liker = models.ManyToManyField(User, through='Like', related_name='likes')
 
     def __str__(self):
         return self.title
@@ -33,3 +34,7 @@ class Comment(models.Model):
     text = models.CharField(max_length=200)
     is_anonym = models.BooleanField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+class Like(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
