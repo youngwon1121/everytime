@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'debug_toolbar',
+    'imagekit',
     'board',
 ]
 
@@ -132,6 +133,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Media files (MEDIA)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 INTERNAL_IPS = [
     '127.0.0.1'
 ]

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Board, Article, Comment
+from .models import Board, Article, Comment, ArticleImage
 
 class BoardSerializer(serializers.ModelSerializer):
     class Meta:
@@ -21,10 +21,19 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = '__all__'
 
+class ArticleImageSerializer(serializers.ModelSerializer):
+    photo_thumbnail = serializers.ImageField(read_only=True)
+    
+    class Meta:
+        model = ArticleImage
+        fields = ['id', 'photo', 'article', 'photo_thumbnail']
+
 class ArticleSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='writer.username', read_only=True)
     comments = CommentSerializer(many=True, read_only=True)
+    images = ArticleImageSerializer(many=True, read_only=True)
     comment_cnt = serializers.IntegerField(read_only=True)
+    images_cnt = serializers.IntegerField(read_only=True)
     likes = serializers.IntegerField(read_only=True)
 
     def to_representation(self, instance):
@@ -38,4 +47,4 @@ class ArticleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Article
-        fields = ['title', 'username', 'text', 'is_anonym', 'created_at', 'comment_cnt', 'likes', 'comments']  
+        fields = ['title', 'username', 'text', 'is_anonym', 'created_at', 'comment_cnt', 'likes', 'images_cnt', 'comments', 'images']

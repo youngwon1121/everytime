@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill
 # Create your models here.
 
 class Board(models.Model):
@@ -23,9 +25,12 @@ class Article(models.Model):
     
 # 게시판 첨부 이미지
 class ArticleImage(models.Model):
-    article = models.ForeignKey(Article, on_delete=models.DO_NOTHING)
-    photo = models.ImageField()
-
+    article = models.ForeignKey(Article, on_delete=models.DO_NOTHING, related_name='images')
+    photo = models.ImageField(upload_to='articles')
+    photo_thumbnail = ImageSpecField(source='photo',
+                                    processors=[ResizeToFill(480, 480)],
+                                    format='JPEG',
+                                    options={'quality': 60})
 
 class Comment(models.Model):
     writer = models.ForeignKey(User, on_delete=models.DO_NOTHING)
