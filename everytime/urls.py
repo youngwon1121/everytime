@@ -18,8 +18,10 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.authtoken import views
+from graphene_django.views import GraphQLView
 
 urlpatterns = [
+    path('graphql', GraphQLView.as_view(graphiql=True)),
     path('admin/', admin.site.urls),
     path('', include('board.urls')),
     path('api-token-auth/', views.obtain_auth_token)

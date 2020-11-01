@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'debug_toolbar',
+    'graphene_django',
     'imagekit',
     'board',
 ]
@@ -137,6 +138,13 @@ STATIC_URL = '/static/'
 # Media files (MEDIA)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+GRAPHENE = {
+    "SCHEMA": "board.schema.schema",
+    "MEDDLEWARE": [
+        'graphene_django.debug.DjangoDebugMiddleware'
+    ]
+}
+
 
 INTERNAL_IPS = [
     '127.0.0.1'
